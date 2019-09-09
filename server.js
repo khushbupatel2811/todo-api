@@ -28,7 +28,16 @@ app.get('/', function(req, res) {
 
 app.get('/todos', function(req, res) {
     // res.send(JSON.stringify(todos));
-    res.json(todos);
+    var queryParams = req.query;
+    var filterwdTodos = todos;
+
+    if(queryParams.hasOwnProperty('completed') && queryParams.completed === 'true') {
+        filterwdTodos = _.where(filterwdTodos, { completed: true });
+    } else if (queryParams.hasOwnProperty('completed') && queryParams.completed === 'false') {
+        filterwdTodos = _.where(filterwdTodos, { completed: false });
+    }
+
+    res.json(filterwdTodos);
 });
 
 app.get('/todos/:id', function(req, res) {
